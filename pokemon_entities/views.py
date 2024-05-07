@@ -58,28 +58,30 @@ def show_all_pokemons(request):
 def show_pokemon(request, pokemon_id):
     now = localtime()
     requested_pokemon = get_object_or_404(Pokemon, id=pokemon_id)
-    if requested_pokemon.previous_evolution:
-        pokemon = {
+    prev_evolution = requested_pokemon.evolution
+    next_evolution = requested_pokemon.next.first()
+    pokemon = {
             'img_url': request.build_absolute_uri(requested_pokemon.image.url),
             'title_ru': requested_pokemon.title,
             'description': requested_pokemon.description,
             'title_en': requested_pokemon.title_en,
             'title_jp': requested_pokemon.title_jp,
-            'previous_evolution': {
-                'pokemon_id': requested_pokemon.previous_evolution.id,
-                'img_url': request.build_absolute_uri(
-                    requested_pokemon.previous_evolution.image.url),
-                'title_ru': requested_pokemon.previous_evolution.title
-            }
+    }
+    if prev_evolution:
+        pokemon['previous_evolution'] = {
+            'pokemon_id': prev_evolution.id,
+            'img_url': request.build_absolute_uri(
+                prev_evolution.image.url),
+            'title_ru': prev_evolution.title
         }
-    else:
-        pokemon = {
-            'img_url': request.build_absolute_uri(requested_pokemon.image.url),
-            'title_ru': requested_pokemon.title,
-            'description': requested_pokemon.description,
-            'title_en': requested_pokemon.title_en,
-            'title_jp': requested_pokemon.title_jp,
+    if next_evolution:
+        pokemon['next_evolution'] = {
+            'pokemon_id': next_evolution.id,
+            'img_url': request.build_absolute_uri(
+                next_evolution.image.url),
+            'title_ru': next_evolution.title
         }
+   
     folium_map = folium.Map(location=MOSCOW_CENTER, zoom_start=12)
     for pokemon_entity in PokemonEntity.objects.filter(pokemon=requested_pokemon,
                                                        appeared_at__lt=now,
