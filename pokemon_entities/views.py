@@ -65,7 +65,6 @@ def show_pokemon(request, pokemon_id):
             'title_jp': requested_pokemon.title_jp,
     }
     prev_evolution = requested_pokemon.previous_evolution
-    next_evolution = requested_pokemon.next_evolution.first()
     if prev_evolution:
         pokemon['previous_evolution'] = {
             'pokemon_id': prev_evolution.id,
@@ -73,6 +72,7 @@ def show_pokemon(request, pokemon_id):
                 prev_evolution.image.url),
             'title_ru': prev_evolution.title
         }
+    next_evolution = requested_pokemon.next_evolution.first()
     if next_evolution:
         pokemon['next_evolution'] = {
             'pokemon_id': next_evolution.id,
