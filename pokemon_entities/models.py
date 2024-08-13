@@ -22,7 +22,7 @@ class Pokemon(models.Model):
                                   on_delete=models.CASCADE,
                                   blank=True,
                                   null=True,
-                                  related_name='next_evolution',
+                                  related_name='next_evolutions',
                                   verbose_name='Предыдущая эволюция')
 
 
@@ -33,12 +33,10 @@ class Pokemon(models.Model):
 class PokemonEntity(models.Model):
     pokemon = models.ForeignKey(Pokemon,
                                 on_delete=models.CASCADE,
-                                related_name='pokemon_entity',
+                                related_name='entities',
                                 verbose_name='Ссылка на покемона')
-    latitude = models.FloatField(max_length=200,
-                                 verbose_name='Широта дислокации покемона')
-    longitude = models.FloatField(max_length=200,
-                                  verbose_name='Долгота дислокации покемона')
+    latitude = models.FloatField(verbose_name='Широта дислокации покемона')
+    longitude = models.FloatField(verbose_name='Долгота дислокации покемона')
     appeared_at = models.DateTimeField(default='Дата и время появления')
     disappeared_at = models.DateTimeField(default='Дата и время исчезновения')
     level = models.IntegerField(db_index=True,
