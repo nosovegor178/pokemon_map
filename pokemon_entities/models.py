@@ -36,8 +36,8 @@ class PokemonEntity(models.Model):
                                 verbose_name='Ссылка на покемона')
     latitude = models.FloatField(verbose_name='Широта дислокации покемона')
     longitude = models.FloatField(verbose_name='Долгота дислокации покемона')
-    appeared_at = models.DateTimeField()
-    disappeared_at = models.DateTimeField()
+    appeared_at = models.DateTimeField(verbose_name='Время и датапоявления покемона')
+    disappeared_at = models.DateTimeField(verbose_name='Время и дата исчезновения покемона')
     level = models.IntegerField(db_index=True,
                                 null=True,
                                 verbose_name='Уровень')
